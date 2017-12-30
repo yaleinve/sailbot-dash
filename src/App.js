@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import styles from './App.css';
+import Map from './Map'
 
 class App extends Component {
   render() {
-    return null;
+    return <Map size="500" />;
   }
 }
 
