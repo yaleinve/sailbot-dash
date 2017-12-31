@@ -11,6 +11,7 @@ class Map extends Component {
   render() {
     let s = this.props.size;
     return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
+      <Border size={s} />
       <TipArrow length={s / 10} angle={0} x={s / 2} y={s / 40} />
       <TipArrow length={s / 10} angle={270} x={s / 40} y={s / 2} />
       <TipArrow length={s / 10} angle={180} x={s / 2} y={s - s / 40} />
@@ -58,6 +59,12 @@ function BaseArrow(props) {
   return makeArrow(translatePoints(standardArrow, 0, -10), props.length, props.angle, props.x, props.y);
 }
 
+function Border(props) {
+  let s = props.size;
+  let points = [[1, 1], [s - 1, 1], [s - 1, s - 1], [1, s - 1], [1, 1]];
+  return <polyline fill="none" stroke="black" points={pointsToString(points)} />;
+}
+
 function makeArrow(baseArrow, length, angle, x, y) {
   let scaled = scalePoints(baseArrow, length / 10, length / 10);
   let rotated = rotatePoints(scaled, angle);
@@ -81,7 +88,7 @@ function rotatePoints(pts, a) {
 }
 
 function pointsToString(pts) {
-  return pts.map(pt => pt.join(",")).join(" ");
+  return pts.map(pt => pt.join(',')).join(' ');
 }
 
 export default Map;
