@@ -1,28 +1,67 @@
 import React, { Component } from 'react';
+import Roslib from 'roslib'
 
 class Map extends Component {
+  constructor(props) {
+    super(props);
+    let ros = this.setupRos(this.props.rosbridgeAddr);
+    this.state = {ros: ros, listener: this.setupListener(ros), heading: 0.0};
+  }
+
   render() {
-    return (<svg xmlns="http://www.w3.org/2000/svg" width={this.props.size} height={this.props.size}>
-      <BaseArrow length={50} angle={170} x={100} y={100} />
-      <TipArrow length={50} angle={190} x={100} y={100} />
+    let s = this.props.size;
+    return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
+      <TipArrow length={s / 10} angle={0} x={s / 2} y={s / 40} />
+      <TipArrow length={s / 10} angle={270} x={s / 40} y={s / 2} />
+      <TipArrow length={s / 10} angle={180} x={s / 2} y={s - s / 40} />
+      <TipArrow length={s / 10} angle={90} x={s - s / 40} y={s / 2} />
+      <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2} />
     </svg>);
+  }
+
+  setupRos(addr) {
+    let ros = new Roslib.Ros({url: 'ws://' + addr});
+
+    ros.on('connection', () => {
+      console.log('Connected to websocket server.');
+    });
+
+    ros.on('error', error => {
+      console.log('Error connecting to websocket server: ', error);
+    });
+
+    return ros;
+  }
+
+  setupListener(ros) {
+    let listener = new Roslib.Topic({
+      ros: ros,
+      name: '/airmar_data',
+      messageType: 'airmar/AirmarData'
+    });
+
+    listener.subscribe(msg => {
+      this.setState({heading: msg.heading});
+    });
+
+    return listener;
   }
 }
 
 const standardArrow = [[-1.5, 2], [0, 0], [1.5, 2], [0, 0], [0, 10]];
 
 function TipArrow(props) {
-  let scaled = scalePoints(standardArrow, props.length / 10, props.length / 10);
-  let rotated = rotatePoints(scaled, props.angle);
-  let placed = translatePoints(rotated, props.x, props.y);
-  return <polyline fill="none" stroke="black" points={pointsToString(placed)} />;
+  return makeArrow(standardArrow, props.length, props.angle, props.x, props.y);
 }
 
 function BaseArrow(props) {
-  let basedArrow = translatePoints(standardArrow, 0, -10);
-  let scaled = scalePoints(basedArrow, props.length / 10, props.length / 10);
-  let rotated = rotatePoints(scaled, props.angle);
-  let placed = translatePoints(rotated, props.x, props.y);
+  return makeArrow(translatePoints(standardArrow, 0, -10), props.length, props.angle, props.x, props.y);
+}
+
+function makeArrow(baseArrow, length, angle, x, y) {
+  let scaled = scalePoints(baseArrow, length / 10, length / 10);
+  let rotated = rotatePoints(scaled, angle);
+  let placed = translatePoints(rotated, x, y);
   return <polyline fill="none" stroke="black" points={pointsToString(placed)} />;
 }
 
