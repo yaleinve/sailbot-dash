@@ -5,7 +5,12 @@ class Map extends Component {
   constructor(props) {
     super(props);
     let ros = this.setupRos(this.props.rosbridgeAddr);
-    this.state = {ros: ros, listener: this.setupListener(ros), heading: 0.0};
+    this.state = {
+      ros: ros,
+      listener: this.setupListener(ros),
+      heading: 0.0,
+      truWindDir: 0.0
+    };
   }
 
   render() {
@@ -17,6 +22,7 @@ class Map extends Component {
       <TipArrow length={s / 10} angle={180} x={s / 2} y={s - s / 40} />
       <TipArrow length={s / 10} angle={90} x={s - s / 40} y={s / 2} />
       <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2} />
+      <TipArrow length={s / 5} angle={this.state.truWindDir} x={s / 2} y={s / 4} />
     </svg>);
   }
 
@@ -42,7 +48,7 @@ class Map extends Component {
     });
 
     listener.subscribe(msg => {
-      this.setState({heading: msg.heading});
+      this.setState({heading: msg.heading, truWindDir: msg.truWndDir});
     });
 
     return listener;
