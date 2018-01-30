@@ -1,0 +1,13 @@
+.column:after {
+  clear: both;
+}
+
+.mapCol {
+  composes: column;
+  width: 550px;
+  float: left;
+}
+
+.dataCol {
+  composes: column;
+}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const standardArrow = [[-1.5, 2], [0, 0], [1.5, 2], [0, 0], [0, 10]];
 
