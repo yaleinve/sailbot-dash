@@ -13,6 +13,7 @@
 ☐ Planned Route
     - Big Picture: Leg Course
     - Small Picture: Target Heading
+    - Overlay on Google Maps
 ☐ Tacking / Jibing / Other Events
 ☐ Error Log Publisher (maybe query the log)
 ☐ Verbose mode (display internal pid loops)
@@ -21,5 +22,6 @@
 # Sending Data
 
 ☐ Competition Info Update (see captain/competitionInfo)
+    - Update by clicking on navigation map
 ☐ Manual / Auto switch
 ☐ Override
