@@ -1,60 +1,29 @@
 import React, { Component } from 'react';
-import Roslib from 'roslib'
+import 'mapbox-gl/dist/mapbox-gl.css';
+import ReactMapGL from 'react-map-gl';
 
-import { TipArrow, BaseArrow, Border } from "./MapComponents";
+
+const accessToken = 'pk.eyJ1IjoiaW52ZSIsImEiOiJjamQyMnBwam8yODJrMzNxbzFpZWJsYngxIn0.eVIGhm4ZQ8H4u6goKE6xdA' // Mapbox access token
 
 class Map extends Component {
-  constructor(props) {
-    super(props);
-    let ros = this.setupRos(this.props.rosbridgeAddr);
-    this.state = {
-      ros: ros,
-      listener: this.setupListener(ros),
-      heading: 0.0,
-      truWindDir: 0.0
+    state = {
+        viewport: {
+            width: 400,
+            height: 400,
+            latitude: 37.7577,
+            longitude: -122.4376,
+            zoom: 8
+        }
     };
-  }
 
-  render() {
-    let s = this.props.size;
-    return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
-      <Border size={s} />
-      <TipArrow length={s / 10} angle={0} x={s / 2} y={s / 40} />
-      <TipArrow length={s / 10} angle={270} x={s / 40} y={s / 2} />
-      <TipArrow length={s / 10} angle={180} x={s / 2} y={s - s / 40} />
-      <TipArrow length={s / 10} angle={90} x={s - s / 40} y={s / 2} />
-      <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2} />
-      <TipArrow length={s / 5} angle={this.state.truWindDir} x={s / 2} y={s / 4} />
-    </svg>);
-  }
-
-  setupRos(addr) {
-    let ros = new Roslib.Ros({url: 'ws://' + addr});
-
-    ros.on('connection', () => {
-      console.log('Connected to websocket server.');
-    });
-
-    ros.on('error', error => {
-      console.log('Error connecting to websocket server: ', error);
-    });
-
-    return ros;
-  }
-
-  setupListener(ros) {
-    let listener = new Roslib.Topic({
-      ros: ros,
-      name: '/airmar_data',
-      messageType: 'airmar/AirmarData'
-    });
-
-    listener.subscribe(msg => {
-      this.setState({heading: msg.heading, truWindDir: msg.truWndDir});
-    });
-
-    return listener;
-  }
+    render() {
+        return (
+            <ReactMapGL
+                {...this.state.viewport}
+                onViewportChange={(viewport) => this.setState({viewport})}
+            />
+        );
+    }
 }
 
-export default Map;
+export default Map
