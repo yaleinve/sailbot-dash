@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapGL from 'react-map-gl';
 
-
-const accessToken = 'pk.eyJ1IjoiaW52ZSIsImEiOiJjamQyMnBwam8yODJrMzNxbzFpZWJsYngxIn0.eVIGhm4ZQ8H4u6goKE6xdA' // Mapbox access token
-
 class Map extends Component {
     state = {
         viewport: {

@@ -7,11 +7,6 @@ import Readout from './Readout';
 import Control from './Control';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    // require('dotenv').config()
-  }
-
   render() {
     return [
       <div className={styles.mapCol}>
