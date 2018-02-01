@@ -1,27 +1,31 @@
-# Desired Data
+# TODO
 
-✓ Heading
-☐ Sail + Rudder Position
-☐ Wind Speed (apparent / true)
-☐ Boat Speed
-☐ Wind Direction
+### Map
 ☐ Current GPS Location
 ☐ Target Location (mode dependent)
-☐ Point of Sail
-☐ Roll
-☐ XTE + VMG
 ☐ Planned Route
     - Big Picture: Leg Course
     - Small Picture: Target Heading
     - Overlay on Google Maps
-☐ Tacking / Jibing / Other Events
-☐ Error Log Publisher (maybe query the log)
-☐ Verbose mode (display internal pid loops)
 ☐ Sailing trail
 
-# Sending Data
+### Readout
+☐ Point of Sail
+✓ Heading
+☐ Sail + Rudder Position
+☐ Wind Speed (apparent / true)
+☐ Wind Direction
 
+### Control Console
 ☐ Competition Info Update (see captain/competitionInfo)
     - Update by clicking on navigation map
 ☐ Manual / Auto switch
 ☐ Override
+
+### Data
+☐ Boat Speed
+☐ Roll
+☐ XTE + VMG
+☐ Tacking / Jibing / Other Events
+☐ Error Log Publisher (maybe query the log)
+☐ Verbose mode (display internal pid loops)
