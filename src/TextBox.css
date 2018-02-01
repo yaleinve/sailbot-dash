@@ -1,8 +1,13 @@
 .cell {
-  border: 1px solid black;
+  border: px solid black;
+  padding: 5px;
 }
 
 .box {
   composes: cell;
-  text-align: center;
+  text-align: left;
+}
+
+.th {
+    text-align: right;
 }

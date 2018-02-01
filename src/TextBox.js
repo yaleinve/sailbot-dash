@@ -3,10 +3,10 @@ import styles from './TextBox.css';
 
 function TextBox(props) {
   return (
-    <table className={styles.box} style={{width: props.width}}>
-      <tr><th className={styles.cell}>{props.name}</th></tr>
-      <tr><td className={styles.cell}>{props.value}</td></tr>
-    </table>
+      <tr>
+        <th className={styles.cell, styles.th}>{props.name + ":"}</th>
+        <td className={styles.cell}>{props.value}</td>
+      </tr>
   );
 }
 

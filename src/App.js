@@ -14,7 +14,17 @@ class App extends Component {
         <Map size="500" rosbridgeAddr="192.168.56.101:9090" />
       </div>,
       <div className={styles.dataCol}>
-        <TextBox name="Test Name" value="2nd column" width="150px" />
+        <table className={styles.box} style={{width: "100%"}}>
+            <TextBox name="Speed" value="unimplemented" width="150px" />
+            <TextBox name="Heading" value="unimplemented" width="150px" />
+            <TextBox name="Main" value="unimplemented" width="150px" />
+            <TextBox name="Jib" value="unimplemented" width="150px" />
+            <TextBox name="Rudder" value="unimplemented" width="150px" />
+            <TextBox name="Wind Speed" value="unimplemented" width="150px" />
+            <TextBox name="Roll" value="unimplemented" width="150px" />
+            <TextBox name="XTE" value="unimplemented" width="150px" />
+            <TextBox name="VMG" value="unimplemented" width="150px" />
+        </table>
       </div>,
       <div className={styles.controlCol}>
         <Readout size="250" rosbridgeAddr="192.168.56.101:9090" />

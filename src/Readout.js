@@ -19,10 +19,10 @@ class Readout extends Component {
     let s = this.props.size;
     return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
       <Border size={s} />
-      <text x = {s / 2} y = {s / 25} font-size = "15"> N </text>
+      <text x = {s / 2} y = {15} font-size = "15"> N </text>
       <text x = {s / 2} y = {s - s / 40} font-size = "15"> S </text>
-      <text x = {s - s / 25} y = {s / 2} font-size = "15"> E </text>
-      <text x = {s / 40} y = {s / 2} fill = "black" font-size = "15"> W </text>
+      <text x = {s - 15} y = {s / 2} font-size = "15"> E </text>
+      <text x = {s / 40} y = {s / 2} font-size = "15"> W </text>
       <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2} />
       <TipArrow length={s / 5} angle={this.state.truWindDir} x={s / 2} y={s / 4} />
     </svg>);
