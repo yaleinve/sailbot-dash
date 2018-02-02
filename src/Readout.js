@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Roslib from 'roslib'
 
-import { TipArrow, BaseArrow, Border} from "./MapComponents";
+import { TipArrow, Border } from "./MapComponents";
 
 class Readout extends Component {
   constructor(props) {
@@ -19,10 +19,10 @@ class Readout extends Component {
     let s = this.props.size;
     return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
       <Border size={s} />
-      <text x = {s / 2} y = {15} font-size = "15"> N </text>
-      <text x = {s / 2} y = {s - s / 40} font-size = "15"> S </text>
-      <text x = {s - 15} y = {s / 2} font-size = "15"> E </text>
-      <text x = {s / 40} y = {s / 2} font-size = "15"> W </text>
+      <text x = {s / 2} y = {15} fontSize = "15"> N </text>
+      <text x = {s / 2} y = {s - s / 40} fontSize = "15"> S </text>
+      <text x = {s - 15} y = {s / 2} fontSize = "15"> E </text>
+      <text x = {s / 40} y = {s / 2} fontSize = "15"> W </text>
       <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2} />
       <TipArrow length={s / 5} angle={this.state.truWindDir} x={s / 2} y={s / 4} />
     </svg>);

@@ -10,11 +10,12 @@ import Control from './Control';
 class App extends Component {
   render() {
     return [
-      <div className={styles.mapCol}>
+      <div className={styles.mapCol} key="mapCol">
         <Map size="500" rosbridgeAddr="192.168.56.101:9090" />
       </div>,
-      <div className={styles.dataCol}>
+      <div className={styles.dataCol} key="dataCol">
         <table className={styles.box} style={{width: "100%"}}>
+          <tbody>
             <TextBox name="Speed" value="unimplemented" width="150px" />
             <TextBox name="Heading" value="unimplemented" width="150px" />
             <TextBox name="Main" value="unimplemented" width="150px" />
@@ -24,9 +25,10 @@ class App extends Component {
             <TextBox name="Roll" value="unimplemented" width="150px" />
             <TextBox name="XTE" value="unimplemented" width="150px" />
             <TextBox name="VMG" value="unimplemented" width="150px" />
+          </tbody>
         </table>
       </div>,
-      <div className={styles.controlCol}>
+      <div className={styles.controlCol} key="controlCol">
         <Readout size="250" rosbridgeAddr="192.168.56.101:9090" />
         <Control name="Control Panel" size="250" />
       </div>
