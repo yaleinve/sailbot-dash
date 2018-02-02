@@ -1,24 +1,24 @@
 /* Three-column layout with first column at 550px and other columns splitting remaining width*/
 
 .column {
-  float: left;
+    float: left;
 }
 
 .column:after {
-  clear: both;
+    clear: both;
 }
 
 .mapCol {
-  composes: column;
-  width: 550px;
+    composes: column;
+    width: 550px;
 }
 
 .dataCol {
-  composes: column;
-  width: calc(50% - 275px);
+    composes: column;
+    width: calc(50% - 275px);
 }
 
 .controlCol {
-  composes: column;
-  width: calc(50% - 275px);
+    composes: column;
+    width: calc(50% - 275px);
 }

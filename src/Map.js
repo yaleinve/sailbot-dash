@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGL, {Marker} from 'react-map-gl';
 
@@ -44,7 +44,7 @@ class Map extends Component {
     _renderMarker(station, i) {
         const {name, coordinates} = station;
         return (
-            <Marker key={i} latitude={coordinates[0]} longitude={coordinates[1]} >
+            <Marker key={i} latitude={coordinates[0]} longitude={coordinates[1]}>
                 <div className="station"><span>{name}</span></div>
             </Marker>
         );
@@ -56,9 +56,9 @@ class Map extends Component {
                 {...this.state.settings}
                 {...this.state.viewport}
                 onViewportChange={(viewport) => this.setState({viewport})}
-                mapStyle="mapbox://styles/mapbox/dark-v9" >
+                mapStyle="mapbox://styles/mapbox/dark-v9">
                 <style>{MARKER_STYLE}</style>
-                { gps_locs.map(this._renderMarker) }
+                {gps_locs.map(this._renderMarker)}
             </MapGL>
         );
     }

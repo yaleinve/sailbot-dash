@@ -1,14 +1,14 @@
 .cell {
-  border: none;
-  padding: 5px;
+    border: none;
+    padding: 5px;
 }
 
 .box {
-  composes: cell;
-  text-align: left;
+    composes: cell;
+    text-align: left;
 }
 
 .th {
-  text-align: right;
-  composes: cell;
+    text-align: right;
+    composes: cell;
 }
