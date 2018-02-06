@@ -68,11 +68,11 @@ class Map extends Component {
     }
 
     _renderBoatPath(path) {
-        return (
-            <Layer type="line" layout={lineLayout} paint={linePaint}>
-                <Feature coordinates={mappedRoute} />
-            </Layer>
-        );
+        // return (
+        //    <Layer type="line" layout={lineLayout} paint={linePaint}>
+        //        <Feature coordinates={mappedRoute} />
+        //    </Layer>
+        //);
     }
 
     _renderMarker(station, i) {
