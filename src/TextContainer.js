@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import RosLib from 'roslib';
+import TextBox from './TextBox';
+
+import styles from './stylesheets/TextContainer.css';
 
 class TextContainer extends Component {
   constructor () {

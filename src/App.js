@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import styles from './App.css';
+import styles from './stylesheets/App.css';
 
 import Map from './Map';
-import TextBox from './TextBox';
+import TextContainer from './TextContainer';
 import Readout from './Readout';
 import Control from './Control';
 

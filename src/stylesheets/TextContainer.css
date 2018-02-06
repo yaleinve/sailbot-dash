@@ -1,0 +1,4 @@
+.box {
+    composes: cell from './TextBox.css';
+    text-align: left;
+}
