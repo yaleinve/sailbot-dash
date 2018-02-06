@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Roslib from 'roslib'
 
-import {TipArrow, Border} from "./MapComponents";
+import {TipArrow, Border} from "./ReadoutComponents";
 
 class Readout extends Component {
     constructor(props) {
