@@ -6,7 +6,9 @@ import MARKER_STYLE from './marker-style';
 import gps_locs from './test_locs.json';
 
 class Map extends Component {
-    state = {
+    constructor() {
+      super();
+      this.state = {
         viewport: {
             width: 400,
             height: 400,
@@ -27,6 +29,7 @@ class Map extends Component {
             minPitch: 0,
             maxPitch: 85
         }
+      };
     };
 
     _resize = () => {
