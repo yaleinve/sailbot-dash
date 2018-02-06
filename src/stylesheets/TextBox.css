@@ -3,11 +3,6 @@
     padding: 5px;
 }
 
-.box {
-    composes: cell;
-    text-align: left;
-}
-
 .th {
     text-align: right;
     composes: cell;
