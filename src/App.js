@@ -67,11 +67,18 @@ class App extends Component {
                 name: topicName,
                 messageType: msgType
             });
+            topic.calls = [];
+            topic.on('warning', warn => console.log("ROS topic warning: " + warn));
+            topic.on('error', warn => console.log("ROS topic error: " + warn));
             this.topics[topicName] = topic;
             console.log("Adding new topic " + topicName);
+            topic.subscribe(msg => {
+                for (let i in topic.calls) {
+                    (topic.calls[i])(msg);
+                }
+            });
         }
-        topic.on('warning', warn => console.log("ROS topic warning: " + warn));
-        topic.subscribe(listener);
+        topic.calls.push(listener);
     }
 }
 
