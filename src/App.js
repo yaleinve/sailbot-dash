@@ -24,7 +24,9 @@ class App extends Component {
                 <Map size="500"/>
             </div>,
             <div className={styles.dataCol} key="dataCol">
-                <TextContainer />
+                <TextContainer
+                    addListener={this._addListener}
+                />
             </div>,
             <div className={styles.controlCol} key="controlCol">
                 <Readout size="250" addListener={this._addListener}/>
