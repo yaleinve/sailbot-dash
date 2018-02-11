@@ -1,15 +1,13 @@
 import React, {Component} from 'react';
-import Roslib from 'roslib'
 
 import {TipArrow, Border} from "./ReadoutComponents";
 
 class Readout extends Component {
     constructor(props) {
         super(props);
-        let ros = this.setupRos(this.props.rosbridgeAddr);
+
+        props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.rosListener(msg));
         this.state = {
-            ros: ros,
-            listener: this.setupListener(ros),
             heading: 0.0,
             truWindDir: 0.0
         };
@@ -28,32 +26,9 @@ class Readout extends Component {
         </svg>);
     }
 
-    setupRos(addr) {
-        let ros = new Roslib.Ros({url: 'ws://' + addr});
-
-        ros.on('connection', () => {
-            console.log('Connected to websocket server.');
-        });
-
-        ros.on('error', error => {
-            console.log('Error connecting to websocket server: ', error);
-        });
-
-        return ros;
-    }
-
-    setupListener(ros) {
-        let listener = new Roslib.Topic({
-            ros: ros,
-            name: '/airmar_data',
-            messageType: 'airmar/AirmarData'
-        });
-
-        listener.subscribe(msg => {
-            this.setState({heading: msg.heading, truWindDir: msg.truWndDir});
-        });
-
-        return listener;
+    rosListener(msg) {
+        console.log("Readout Listener");
+        this.setState({heading: msg.heading, truWindDir: msg.truWndDir});
     }
 }
 
