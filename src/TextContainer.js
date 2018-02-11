@@ -4,8 +4,8 @@ import TextBox from './TextBox';
 import styles from './stylesheets/TextContainer.css';
 
 class TextContainer extends Component {
-  constructor () {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       speed: '',
       heading: '',
@@ -17,8 +17,10 @@ class TextContainer extends Component {
       xte: '',
       vmg: ''
     }
-  }
 
+      props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.airmarListener(msg));
+      props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
+  }
 
   render () {
     return (
@@ -36,6 +38,25 @@ class TextContainer extends Component {
           </tbody>
       </table>
     )
+  }
+
+  airmarListener(msg) {
+      this.setState({
+          speed: msg.sog,
+          heading: msg.heading,
+          windspeed: msg.truWndSpd,
+          roll: msg.amrRoll,
+          xte: msg.XTE,
+          vmg: msg.VMG
+      });
+  }
+
+  sailsListener(msg) {
+      this.setState({
+          main: msg.mainPos,
+          jib: msg.jibPos,
+          rudder: msg.rudderPos
+      });
   }
 }
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Roslib from 'roslib'
 
 class Control extends Component {
     constructor(props) {
