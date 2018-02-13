@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapGL, {Marker} from 'react-map-gl';
 
+import Mapstyle from './mapstyle-raster'
+
 import MARKER_STYLE from './marker-style';
 
 class Map extends Component {
@@ -29,7 +31,7 @@ class Map extends Component {
             height: 400,
             latitude: 41.256243,
             longitude: -72.850389,
-            zoom: 12
+            zoom: 14
         },
         settings: {
             dragPan: true,
@@ -90,7 +92,7 @@ class Map extends Component {
                 {...this.state.settings}
                 {...this.state.viewport}
                 onViewportChange={(viewport) => this.setState({viewport})}
-                mapStyle="mapbox://styles/mapbox/dark-v9">
+                mapStyle={Mapstyle}>
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
                 {this._renderBoatPath(this.state._renderBoatPath)}
