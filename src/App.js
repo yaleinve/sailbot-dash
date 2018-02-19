@@ -21,7 +21,7 @@ class App extends Component {
     render() {
         return [
             <div className={styles.mapCol} key="mapCol">
-                <Map size="500"/>
+                <Map size="600"/>
             </div>,
             <div className={styles.dataCol} key="dataCol">
                 <TextContainer

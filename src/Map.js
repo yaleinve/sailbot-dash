@@ -27,8 +27,8 @@ class Map extends Component {
                         [41.256245, -72.855291],
                         [41.256245, -72.855291]],
         viewport: {
-            width: 400,
-            height: 400,
+            width: 600,
+            height: 600,
             latitude: 41.256243,
             longitude: -72.850389,
             zoom: 14
@@ -51,8 +51,11 @@ class Map extends Component {
     };
 
     _onClick(event) {
-        console.log(event.lngLat)
-        this.state.boat_location = event.lngLat
+        this.setState({
+            destination: [event.lngLat[1], event.lngLat[0]]
+        });
+
+        // TODO: communicate change to edison
     }
 
     _resize = () => {
@@ -77,6 +80,15 @@ class Map extends Component {
         //);
     }
 
+    _renderTarget(loc) {
+        return (
+            <Marker key={"destination"} latitude={loc[0]} longitude={loc[1]}>
+                <div className="target"><span>{"destination"}</span></div>
+            </Marker>
+        );
+
+    }
+
     _renderMarker(station, i) {
         const {name, coordinates} = station;
         return (
@@ -95,7 +107,8 @@ class Map extends Component {
                 mapStyle={Mapstyle}>
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
-                {this._renderBoatPath(this.state._renderBoatPath)}
+                {this._renderTarget(this.state.destination)}
+                {this._renderBoatPath(this.state.path_history)}
             </MapGL>
         );
     }
