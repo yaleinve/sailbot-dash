@@ -72,12 +72,23 @@ class Map extends Component {
         this.setState({viewport});
     }
 
-    _renderBoatPath(path) {
-        // return (
-        //    <Layer type="line" layout={lineLayout} paint={linePaint}>
-        //        <Feature coordinates={mappedRoute} />
-        //    </Layer>
-        //);
+    _renderBoatPath(map) {
+        map.getMap().addLayer({
+            "id": "route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": this.state.path_history
+                    }
+                }
+            }
+        });
+
     }
 
     _renderTarget(loc) {
@@ -101,14 +112,14 @@ class Map extends Component {
     render() {
         return (
             <MapGL
-                {...this.state.settings}
-                {...this.state.viewport}
-                onViewportChange={(viewport) => this.setState({viewport})}
-                mapStyle={Mapstyle}>
+                    {...this.state.settings}
+                    {...this.state.viewport}
+                    ref = {(map) => { this._map = map ; this._map.getMap().on('load', () => this._renderBoatPath(this._map))}}
+                    onViewportChange={(viewport) => this.setState({viewport})}
+                    mapStyle={Mapstyle}>
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
                 {this._renderTarget(this.state.destination)}
-                {this._renderBoatPath(this.state.path_history)}
             </MapGL>
         );
     }
