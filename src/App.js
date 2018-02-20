@@ -13,15 +13,17 @@ class App extends Component {
         super(props);
 
         this._addListener = this._addListener.bind(this);
+        this._publish = this._publish.bind(this);
 
-        this.ros = this._setupRos("192.168.56.101:9090");
-        this.topics = {};
+        this.ros = this._setupRos("172.29.35.63:9090");
+        this.subTopics = {};
+        this.pubTopics = {};
     }
 
     render() {
         return [
             <div className={styles.mapCol} key="mapCol">
-                <Map size="600"/>
+                <Map size="600" publish={this._publish}/>
             </div>,
             <div className={styles.dataCol} key="dataCol">
                 <TextContainer
@@ -59,8 +61,8 @@ class App extends Component {
     _addListener(topicName, msgType, listener) {
         let topic;
         console.log("Adding listener for " + topicName);
-        if (topicName in this.topics) {
-            topic = this.topics[topicName];
+        if (topicName in this.subTopics) {
+            topic = this.subTopics[topicName];
         } else {
             topic = new Roslib.Topic({
                 ros: this.ros,
@@ -70,8 +72,8 @@ class App extends Component {
             topic.calls = [];
             topic.on('warning', warn => console.log("ROS topic warning: " + warn));
             topic.on('error', warn => console.log("ROS topic error: " + warn));
-            this.topics[topicName] = topic;
-            console.log("Adding new topic " + topicName);
+            this.subTopics[topicName] = topic;
+            console.log("Adding new subscription topic " + topicName);
             topic.subscribe(msg => {
                 for (let i in topic.calls) {
                     (topic.calls[i])(msg);
@@ -79,6 +81,25 @@ class App extends Component {
             });
         }
         topic.calls.push(listener);
+    }
+
+    _publish(topicName, msgType, msg) {
+        let topic;
+        console.log("Publishing to " + topicName);
+        if (topicName in this.pubTopics) {
+            topic = this.pubTopics[topicName];
+        } else {
+            topic = new Roslib.Topic({
+                ros: this.ros,
+                name: topicName,
+                messageType: msgType
+            });
+            topic.on('warning', warn => console.log("ROS topic warning: " + warn));
+            topic.on('error', warn => console.log("ROS topic error: " + warn));
+            this.pubTopics[topicName] = topic;
+            console.log("Adding new publication topic " + topicName);
+        }
+        topic.publish(msg);
     }
 }
 

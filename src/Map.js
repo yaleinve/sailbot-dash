@@ -7,8 +7,8 @@ import Mapstyle from './mapstyle-raster'
 import MARKER_STYLE from './marker-style';
 
 class Map extends Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
 
       // bind for callback see:
       // https://medium.com/@rjun07a/binding-callbacks-in-react-components-9133c0b396c6
@@ -55,7 +55,15 @@ class Map extends Component {
             destination: [event.lngLat[1], event.lngLat[0]]
         });
 
-        // TODO: communicate change to edison
+        let msg = {
+            comp_mode: 'SailToPoint',
+            gps_lat1: event.lngLat[1],
+            gps_long1: event.lngLat[0],
+            xte_min: -5,
+            xte_max: 5
+        };
+
+        this.props.publish("/competition_info", "captain/CompetitionInfo", msg);
     }
 
     _resize = () => {
