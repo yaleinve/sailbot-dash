@@ -22,10 +22,9 @@ class Map extends Component {
             {"name":"Point 4","coordinates":[41.252245, -72.850291]}],
         boat_location: [41.256245, -72.855291],
         destination: [41.256245, -72.855291],
-        path_history: [[41.256245, -72.855291],
+        path_history: [[41.26, -72.86],
                         [41.256245, -72.855291],
-                        [41.256245, -72.855291],
-                        [41.256245, -72.855291]],
+                        [41.25, -72.85]],
         viewport: {
             width: 600,
             height: 600,
@@ -73,6 +72,7 @@ class Map extends Component {
     }
 
     _renderBoatPath(map) {
+        // Call to map does lat/long transpose to meet mapbox convention
         map.getMap().addLayer({
             "id": "route",
             "type": "line",
@@ -83,9 +83,17 @@ class Map extends Component {
                     "properties": {},
                     "geometry": {
                         "type": "LineString",
-                        "coordinates": this.state.path_history
+                        "coordinates": this.state.path_history.map(pt => [pt[1], pt[0]])
                     }
                 }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#888",
+                "line-width": 8
             }
         });
 
@@ -114,7 +122,12 @@ class Map extends Component {
             <MapGL
                     {...this.state.settings}
                     {...this.state.viewport}
-                    ref = {(map) => { this._map = map ; this._map.getMap().on('load', () => this._renderBoatPath(this._map))}}
+                    ref = {(map) => {
+                        if (map !== null) {
+                            this._map = map;
+                            this._map.getMap().on('load', () => this._renderBoatPath(this._map))
+                        }
+                    }}
                     onViewportChange={(viewport) => this.setState({viewport})}
                     mapStyle={Mapstyle}>
                 <style>{MARKER_STYLE}</style>
