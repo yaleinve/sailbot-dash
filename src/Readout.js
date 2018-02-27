@@ -15,8 +15,8 @@ class Readout extends Component {
         props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
 
         this.state = {
-            heading: 30,
-            truWindDir: 60,
+            heading: 170,
+            truWindDir: 300,
             main: 30,
             jib: 30,
             rudder: 30
@@ -28,6 +28,13 @@ class Readout extends Component {
 
         let s = this.props.size;
         let heading = 360 - this.state.heading
+
+        // -1 if wind is over the LHS of the boat
+        // +1 if wind is over the RHS of the boat
+        var sails_side = 1
+        if (((this.state.truWindDir - this.state.heading) % 180) >= 0) {
+            sails_side = -1
+        }
 
         return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
             <Border size={s}/>
@@ -47,10 +54,10 @@ class Readout extends Component {
                    orientation={heading - this.state.rudder}
                    width="40" height="60"/>
             <Image size={s} url={sail} r="47" angle={(360 - heading)}
-                   orientation={heading + this.state.jib}
+                   orientation={heading + (this.state.jib * sails_side)}
                    width="50" height="75"/>
             <Image size={s} url={sail} r="0" angle="0"
-                   orientation={heading + this.state.main}
+                   orientation={heading + (this.state.main * sails_side)}
                    width="80" height="120"/>
         </svg>);
         // <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2}/>
