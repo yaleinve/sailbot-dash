@@ -15,8 +15,10 @@ class TextContainer extends Component {
       windspeed: '',
       roll: '',
       xte: '',
-      vmg: ''
-    }
+      vmg: '',
+        lat: '',
+        long: ''
+    };
 
       props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.airmarListener(msg));
       props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
@@ -35,6 +37,8 @@ class TextContainer extends Component {
           <TextBox name="Roll" value={this.state.roll} width="150px"/>
           <TextBox name="XTE" value={this.state.xte} width="150px"/>
           <TextBox name="VMG" value={this.state.vmg} width="150px"/>
+          <TextBox name="Latitude" value={this.state.lat} width="150px"/>
+          <TextBox name="Longitude" value={this.state.long} width="150px"/>
           </tbody>
       </table>
     )
@@ -47,7 +51,9 @@ class TextContainer extends Component {
           windspeed: msg.truWndSpd,
           roll: msg.amrRoll,
           xte: msg.XTE,
-          vmg: msg.VMG
+          vmg: msg.VMG,
+          lat: msg.lat,
+          long: msg.long
       });
   }
 
