@@ -11,8 +11,8 @@ var data = {
         "id": "simple-tiles",
         "type": "raster",
         "source": "raster-tiles",
-        "minzoom": 13,
-        "maxzoom": 16
+        "minzoom": 12,
+        "maxzoom": 17
     }]
 };
 
