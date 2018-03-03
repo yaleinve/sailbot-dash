@@ -58,8 +58,8 @@ class Map extends Component {
             comp_mode: 'SailToPoint',
             gps_lat1: event.lngLat[1],
             gps_long1: event.lngLat[0],
-            xte_min: -5,
-            xte_max: 5
+            xte_min: -20,
+            xte_max: 20
         };
 
         this.props.publish("/competition_info", "captain/CompetitionInfo", msg);
