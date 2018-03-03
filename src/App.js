@@ -15,7 +15,8 @@ class App extends Component {
         this._addListener = this._addListener.bind(this);
         this._publish = this._publish.bind(this);
 
-        this.ros = this._setupRos("172.29.35.63:9090");
+        this.ros = this._setupRos("192.168.0.98:9090");
+        // this.ros = this._setupRos("172.29.35.63:9090");
         this.subTopics = {};
         this.pubTopics = {};
     }
