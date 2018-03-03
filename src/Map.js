@@ -16,15 +16,14 @@ class Map extends Component {
 
       this.state = {
         poi: [
-            {"name":"Point 1","coordinates":[41.258245, -72.850291]},
-            {"name":"Point 2","coordinates":[41.258245, -72.858291]},
-            {"name":"Point 3","coordinates":[41.252245, -72.858291]},
-            {"name":"Point 4","coordinates":[41.252245, -72.850291]}],
-        boat_location: [41.256245, -72.855291],
-        destination: [41.256245, -72.855291],
-        path_history: [[41.26, -72.86],
-                        [41.256245, -72.855291],
-                        [41.25, -72.85]],
+            // {"name":"Point 1","coordinates":[41.258245, -72.850291]},
+            // {"name":"Point 2","coordinates":[41.258245, -72.858291]},
+            // {"name":"Point 3","coordinates":[41.252245, -72.858291]},
+            // {"name":"Point 4","coordinates":[41.252245, -72.850291]}
+            ],
+        // stored as [lat, long, speed]
+        destination: [41.252245, -72.858291],
+        path_history: [],
         viewport: {
             width: 600,
             height: 600,
@@ -47,7 +46,7 @@ class Map extends Component {
             onClick: this._onClick
         }
       };
-    };
+    }
 
     _onClick(event) {
         this.setState({
@@ -97,11 +96,11 @@ class Map extends Component {
             },
             "layout": {
                 "line-join": "round",
-                "line-cap": "round"
+                "line-cap": "butt"
             },
             "paint": {
                 "line-color": "#888",
-                "line-width": 8
+                "line-width": 4
             }
         });
 
@@ -125,7 +124,23 @@ class Map extends Component {
         );
     }
 
+    airmarListener(msg) {
+        // TODO: path color by speed (msg.isog)
+        var joined = this.state.path_history.concat([msg.lat, msg.long])
+        this.setState({
+            path_history: joined
+        });
+    }
+
+
     render() {
+        // XXX
+        var boatMarker
+        if (this.state.path_history.length >= 1) {
+            boatMarker = {"name":"Boat","coordinates":this.state.path_history.slice(-1)[0]}
+        } else {
+            boatMarker = {"name":"Boat","coordinates":[0,0]}
+        }
         return (
             <MapGL
                     {...this.state.settings}
@@ -141,6 +156,7 @@ class Map extends Component {
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
                 {this._renderTarget(this.state.destination)}
+                {this._renderMarker(boatMarker)}
             </MapGL>
         );
     }

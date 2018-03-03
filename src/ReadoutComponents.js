@@ -58,9 +58,8 @@ function transformationString(x, y, rotation) {
     return ["rotate(", rotation, " ", x, " ", y, ")"].join('')
 }
 
-// image
+//
 function Image(props) {
-    // r="80" angle="80" orientation="20" width="50"/
     let a = props.angle - 180
     let [x, y] = polarToCartesian(props.r, a, props.size, props.width, props.height)
     let x_center = x + props.width / 2.0

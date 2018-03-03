@@ -24,8 +24,6 @@ class Readout extends Component {
     }
 
     render() {
-        // let img = "/src/assets/arrow.pn
-
         let s = this.props.size;
         let heading = 360 - this.state.heading
 
@@ -36,6 +34,7 @@ class Readout extends Component {
             sails_side = -1
         }
 
+        //TODO: remove magic numbers for image ratios and sizes
         return (<svg xmlns="http://www.w3.org/2000/svg" width={s} height={s}>
             <Border size={s}/>
             <text x={s / 2 - 5} y={15} fontSize="15"> N</text>
@@ -49,19 +48,19 @@ class Readout extends Component {
                    angle={this.state.truWindDir}
                    orientation={180 - this.state.truWindDir}
                    width="10" height="25"/>
-            <Image name = "rudder"
+            <Image name="rudder"
                    size={s} url={rudder} r="47" angle={(180 - heading)}
                    orientation={heading - this.state.rudder}
                    width="40" height="60"/>
-            <Image size={s} url={sail} r="47" angle={(360 - heading)}
+            <Image name="jib"
+                   size={s} url={sail} r="47" angle={(360 - heading)}
                    orientation={heading + (this.state.jib * sails_side)}
                    width="50" height="75"/>
-            <Image size={s} url={sail} r="0" angle="0"
+            <Image name="main"
+                   size={s} url={sail} r="0" angle="0"
                    orientation={heading + (this.state.main * sails_side)}
                    width="80" height="120"/>
         </svg>);
-        // <TipArrow length={s / 5} angle={this.state.heading} x={s / 2} y={s / 2}/>
-        // <TipArrow length={s / 5} angle={this.state.truWindDir} x={s / 2} y={s / 4}/>
     }
 
     rosListener(msg) {
