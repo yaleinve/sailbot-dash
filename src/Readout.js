@@ -13,14 +13,19 @@ class Readout extends Component {
 
         props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.rosListener(msg));
         props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
+        props.addListener('/leg_info', 'captain/LegInfo', msg => this.legListener(msg));
+        props.addListener('/nav_targets', 'tactics/NavTargets', msg => this.targetListener(msg));
+        props.addListener('/competition_info', 'captain/CompetitionInfo', msg => this.competitionListener(msg));
 
         this.state = {
+            // Airmar Data
             heading: 170,
             truWindDir: 300,
+            // Sails Rudder
             main: 30,
             jib: 30,
-            rudder: 30
-        };
+            rudder: 30,
+       };
     }
 
     render() {
@@ -73,6 +78,31 @@ class Readout extends Component {
           jib: msg.jibPos,
           rudder: msg.rudderPos
       });
+    }
+
+    legListener(msg) {
+        this.setState({
+            beginLat: msg.begin_lat,
+            beginLong: msg.begin_long,
+            endLat: msg.end_lat,
+            endLong: msg.end_long
+        });
+    }
+
+    targetListener(msg) {
+        this.setState({
+            targetCourse: msg.targetCourse,
+            targetRange: msg.targetRange,
+            targetHeading: msg.targetHeading,
+            pointOfSail: msg.pointOfSail
+        });
+    }
+
+    competitionListener(msg) {
+        this.setState({
+            compMode: msg.comp_mode,
+            angle: msg.angle
+        });
     }
 }
 

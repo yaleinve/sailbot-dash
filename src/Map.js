@@ -10,6 +10,9 @@ class Map extends Component {
     constructor(props) {
       super(props);
 
+      // props.addListener('/leg_info', 'captain/LegInfo',
+      //                   msg => this.rosListener(msg));
+
       // bind for callback see:
       // https://medium.com/@rjun07a/binding-callbacks-in-react-components-9133c0b396c6
       this._onClick = this._onClick.bind(this)
@@ -141,6 +144,7 @@ class Map extends Component {
         } else {
             boatMarker = {"name":"Boat","coordinates":[0,0]}
         }
+
         return (
             <MapGL
                     {...this.state.settings}
