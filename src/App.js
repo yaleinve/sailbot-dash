@@ -84,6 +84,10 @@ class App extends Component {
         topic.calls.push(listener);
     }
 
+    _changeIpAddress() {
+      
+    }
+
     _publish(topicName, msgType, msg) {
         let topic;
         console.log("Publishing to " + topicName);

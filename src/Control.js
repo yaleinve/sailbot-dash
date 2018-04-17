@@ -15,11 +15,9 @@ class Control extends Component {
 
     handleChange(event) {
         this.setState({textbox: event.target.value});
-        console.log('typed ' + event.target.value, typeof event.target.value);
     }
 
     handleSubmit(event) {
-        alert('TEXT was submitted: ' + this.state.textbox);
         event.preventDefault();
         const temp = this.state.textbox;
         this.setState({
@@ -40,17 +38,18 @@ class Control extends Component {
         // IF DESTINATION NEEDED TO BE WITHIN REGION, CHECK LATITUDE & LONGITUDE HERE
         if (lat < -90 || lat > 90) {
             alert("Latitude must be between -90 and 90 degrees inclusive.");
-            this.setState({gpstarget: ''});
+            this.setState({gpstarget: ' '});
         }
 
         else if (lng < -180 || lng > 180) {
             alert("Longitude must be between -180 and 180 degrees inclusive.");
-            this.setState({gpstarget: ''});
+            this.setState({gpstarget: 'Longitude must be between -180 and 180 degrees inclusive.'});
         }
 
         else if (lat == "" || lng == "" || isNaN(lat) || isNaN(lng)) {
-            alert("Enter a valid Latitude or Longitude!");
-            this.setState({gpstarget: ''});
+            alert("ERROR: Enter a valid Latitude or Longitude!");
+            this.setState({gpstarget: ' '});
+            return;
         }
         // valid gps -- order boat to this coordinate
         else {
@@ -64,9 +63,8 @@ class Control extends Component {
           };
 
           this.props.publish("/competition_info", "captain/CompetitionInfo", msg);
+          console.log('Sending message to ros...', msg);
         }
-
-        console.log('verify results:', gps, lat, lng);
     }
 
     render() {
