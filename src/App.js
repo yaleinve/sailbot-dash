@@ -19,23 +19,9 @@ class App extends Component {
         // this.ros = this._setupRos("172.29.35.63:9090"); // Yale wifi
         this.subTopics = {};
         this.pubTopics = {};
-    }
 
-    render() {
-        return [
-            <div className={styles.mapCol} key="mapCol">
-                <Map size="600" publish={this._publish}/>
-            </div>,
-            <div className={styles.dataCol} key="dataCol">
-                <TextContainer
-                    addListener={this._addListener}
-                />
-            </div>,
-            <div className={styles.controlCol} key="controlCol">
-                <Readout size="250" addListener={this._addListener}/>
-                <Control name="Control Panel" size="250" publish={this._publish}/>
-            </div>
-        ];
+        this._ratchetIpAddress = this._ratchetIpAddress.bind(this);
+        this._yaleIpAddress = this._yaleIpAddress.bind(this);
     }
 
     _setupRos(addr) {
@@ -84,8 +70,16 @@ class App extends Component {
         topic.calls.push(listener);
     }
 
-    _changeIpAddress() {
-      
+    // switch Edison to search for Ratchet Router IP address
+    _ratchetIpAddress() {
+      this.ros = this._setupRos("192.168.0.98:9090"); // Ratchet router
+      console.log("Switching Edison to ratchet router wifi...");
+    }
+
+    // switch Edison to search for Ratchet Router IP address
+    _yaleIpAddress() {
+      this.ros = this._setupRos("172.29.35.63:9090"); // Yale wifi
+      console.log("Switching Edison to yale wifi...");
     }
 
     _publish(topicName, msgType, msg) {
@@ -106,6 +100,32 @@ class App extends Component {
         }
         topic.publish(msg);
     }
+
+    render() {
+        return (
+          <div id="appbox">
+            <div className={styles.wifiButtons}>
+              <button onClick={this._ratchetIpAddress}>Switch to Ratcheet Router</button>
+              <button onClick={this._yaleIpAddress}>Switch to YaleWifi</button>
+            </div>
+            <div className={styles.mapCol} key="mapCol">
+                <Map size="600" publish={this._publish}/>
+            </div>,
+            <div className={styles.dataCol} key="dataCol">
+                <TextContainer
+                    addListener={this._addListener}
+                />
+            </div>,
+            <div className={styles.controlCol} key="controlCol">
+                <Readout size="250" addListener={this._addListener}/>
+                <Control name="Control Panel" size="250" publish={this._publish}/>
+            </div>
+
+
+        </div>
+      );
+    }
+
 }
 
 export default App;

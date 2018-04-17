@@ -1,5 +1,9 @@
 /* Three-column layout with first column at 550px and other columns splitting remaining width*/
 
+#appbox {
+  display: flex;
+}
+
 .column {
     float: left;
 }
@@ -21,4 +25,12 @@
 .controlCol {
     composes: column;
     width: calc(50% - 275px);
+}
+
+.wifiButtons {
+  padding: 10px;
+}
+
+.wifiButtons * {
+  margin: 3px;
 }
