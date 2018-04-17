@@ -109,7 +109,7 @@ class App extends Component {
               <button onClick={this._yaleIpAddress}>Switch to YaleWifi</button>
             </div>
             <div className={styles.mapCol} key="mapCol">
-                <Map size="600" publish={this._publish}/>
+                <Map size="600" publish={this._publish} addListener={this._addListener}/>
             </div>,
             <div className={styles.dataCol} key="dataCol">
                 <TextContainer

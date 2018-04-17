@@ -15,7 +15,8 @@ class Map extends Component {
 
       // bind for callback see:
       // https://medium.com/@rjun07a/binding-callbacks-in-react-components-9133c0b396c6
-      this._onClick = this._onClick.bind(this)
+      this._onClick = this._onClick.bind(this);
+      props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.airmarListener(msg));
 
       this.state = {
         poi: [
@@ -83,6 +84,12 @@ class Map extends Component {
 
     _renderBoatPath(map) {
         // Call to map does lat/long transpose to meet mapbox convention
+        // Things seem to break without these console.log statements...
+        console.log(map.getMap().getLayer("route"));
+        map.getMap().removeLayer("route");
+        console.log(map.getMap().getLayer("route"));
+        console.log(map.getMap().getSource("route"));
+        console.log(map.getMap().isSourceLoaded("route"));
         map.getMap().addLayer({
             "id": "route",
             "type": "line",
@@ -129,7 +136,7 @@ class Map extends Component {
 
     airmarListener(msg) {
         // TODO: path color by speed (msg.isog)
-        var joined = this.state.path_history.concat([msg.lat, msg.long])
+        var joined = this.state.path_history.concat([[msg.lat, msg.long]]);
         this.setState({
             path_history: joined
         });
@@ -138,9 +145,10 @@ class Map extends Component {
 
     render() {
         // XXX
-        var boatMarker
+        var boatMarker;
         if (this.state.path_history.length >= 1) {
-            boatMarker = {"name":"Boat","coordinates":this.state.path_history.slice(-1)[0]}
+            boatMarker = {"name":"Boat","coordinates":this.state.path_history.slice(-1)[0]};
+            console.log(this.state.path_history.slice(-1)[0]);
         } else {
             boatMarker = {"name":"Boat","coordinates":[0,0]}
         }
