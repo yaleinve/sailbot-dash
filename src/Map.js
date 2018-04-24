@@ -85,11 +85,11 @@ class Map extends Component {
     _renderBoatPath(map) {
         // Call to map does lat/long transpose to meet mapbox convention
         // Things seem to break without these console.log statements...
-        console.log(map.getMap().getLayer("route"));
+        // console.log(map.getMap().getLayer("route"));
         map.getMap().removeLayer("route");
-        console.log(map.getMap().getLayer("route"));
-        console.log(map.getMap().getSource("route"));
-        console.log(map.getMap().isSourceLoaded("route"));
+        // console.log(map.getMap().getLayer("route"));
+        // console.log(map.getMap().getSource("route"));
+        // console.log(map.getMap().isSourceLoaded("route"));
         map.getMap().addLayer({
             "id": "route",
             "type": "line",

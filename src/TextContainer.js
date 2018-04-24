@@ -37,6 +37,7 @@ class TextContainer extends Component {
         };
 
         props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.airmarListener(msg));
+        props.addListener('/speed_stats', 'speed_calculator/SpeedStats', msg => this.speedStatsListener(msg));
         props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
         props.addListener('/leg_info', 'captain/LegInfo', msg => this.legListener(msg));
         props.addListener('/nav_targets', 'tactics/NavTargets', msg => this.targetListener(msg));
@@ -60,6 +61,9 @@ class TextContainer extends Component {
                 <TextBox name="Longitude" value={this.state.long} width="150px"/>
                 <TextBox name="Distance Left" value={this.state.targetRange} width="150px"/>
                 <TextBox name="P.O.S" value={this.state.pointOfSail} width="150px"/>
+                <TextBox name="Target Course" value={this.state.targetCourse} width="150px"/>
+                <TextBox name="Target Heading" value={this.state.targetHeading} width="150px"/>
+                <TextBox name="Target Range" value={this.state.targetRange} width="150px"/>
                 <TextBox name="Mode" value={this.state.compMode} width="150px"/>
                 <TextBox name="Autonomous" value={this.state.isAutonomous} width="150px"/>
                 </tbody>
@@ -77,6 +81,13 @@ class TextContainer extends Component {
             vmg: msg.VMG,
             lat: msg.lat,
             long: msg.long
+        });
+    }
+
+    speedStatsListener(msg) {
+        this.setState({
+            xte: msg.xte,
+            vmg: msg.vmg
         });
     }
 
