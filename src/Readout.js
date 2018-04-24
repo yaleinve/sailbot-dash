@@ -54,11 +54,11 @@ class Readout extends Component {
                    orientation={180 - this.state.truWindDir}
                    width="10" height="25"/>
             <Image name="rudder"
-                   size={s} url={rudder} r="47" angle={(180 - heading)}
+                   size={s} url={rudder} r="47" angle={(180 + heading)}
                    orientation={heading - this.state.rudder}
                    width="40" height="60"/>
             <Image name="jib"
-                   size={s} url={sail} r="47" angle={(360 - heading)}
+                   size={s} url={sail} r="47" angle={(360 + heading)}
                    orientation={heading + (this.state.jib * sails_side)}
                    width="50" height="75"/>
             <Image name="main"

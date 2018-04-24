@@ -27,7 +27,7 @@ function Image(props) {
     let [x, y] = polarToCartesian(props.r, a, props.size, props.width, props.height)
     let x_center = x + props.width / 2.0
     let y_center = y + props.height / 2.0
-    let ts = transformationString(x_center, y_center, props.orientation)
+    let ts = transformationString(x_center, y_center, -props.orientation)
     return <image href={props.url} x={x} y={y} width={props.width} transform={ts}/>
 }
 
