@@ -73,46 +73,46 @@ class TextContainer extends Component {
 
     airmarListener(msg) {
         this.setState({
-            speed: msg.sog,
-            heading: msg.heading,
-            windspeed: msg.truWndSpd,
-            roll: msg.amrRoll,
-            xte: msg.XTE,
-            vmg: msg.VMG,
-            lat: msg.lat,
-            long: msg.long
+            speed: parseFloat(msg.sog).toFixed(2),
+            heading: parseFloat(msg.heading).toFixed(1),
+            windspeed: parseFloat(msg.truWndSpd).toFixed(2),
+            roll: parseFloat(msg.amrRoll).toFixed(1),
+            xte: parseFloat(msg.XTE).toFixed(1),
+            vmg: parseFloat(msg.VMG).toFixed(2),
+            lat: parseFloat(msg.lat).toFixed(6),
+            long: parseFloat(msg.long).toFixed(6)
         });
     }
 
     speedStatsListener(msg) {
         this.setState({
-            xte: msg.xte,
-            vmg: msg.vmg
+            xte: parseFloat(msg.xte).toFixed(1),
+            vmg: parseFloat(msg.vmg).toFixed(2)
         });
     }
 
     sailsListener(msg) {
         this.setState({
-            main: msg.mainPos,
-            jib: msg.jibPos,
-            rudder: msg.rudderPos
+            main: parseFloat(msg.mainPos).toFixed(1),
+            jib: parseFloat(msg.jibPos).toFixed(1),
+            rudder: parseFloat(msg.rudderPos).toFixed(1)
         });
     }
 
     legListener(msg) {
         this.setState({
-            beginLat: msg.begin_lat,
-            beginLong: msg.begin_long,
-            endLat: msg.end_lat,
-            endLong: msg.end_long
+            beginLat: parseFloat(msg.begin_lat).toFixed(6),
+            beginLong: parseFloat(msg.begin_long).toFixed(6),
+            endLat: parseFloat(msg.end_lat).toFixed(6),
+            endLong: parseFloat(msg.end_long).toFixed(6)
         });
     }
 
     targetListener(msg) {
         this.setState({
-            targetCourse: msg.targetCourse,
-            targetRange: msg.targetRange,
-            targetHeading: msg.targetHeading,
+            targetCourse: parseFloat(msg.targetCourse).toFixed(1),
+            targetRange: parseFloat(msg.targetRange).toFixed(2),
+            targetHeading: parseFloat(msg.targetHeading).toFixed(1),
             pointOfSail: msg.pointOfSail
         });
     }
@@ -120,7 +120,7 @@ class TextContainer extends Component {
     competitionListener(msg) {
         this.setState({
             compMode: msg.comp_mode,
-            angle: msg.angle,
+            angle: parseFloat(msg.angle).toFixed(2),
             isAutonomous: msg.currently_autonomous
         });
     }
