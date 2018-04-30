@@ -82,14 +82,21 @@ class TextContainer extends Component {
             heading: parseFloat(msg.heading).toFixed(1),
             windspeed: parseFloat(msg.truWndSpd).toFixed(2),
             roll: parseFloat(msg.amrRoll).toFixed(1),
-            xte: parseFloat(msg.XTE).toFixed(1),
-            vmg: parseFloat(msg.VMG).toFixed(2),
             lat: parseFloat(msg.lat).toFixed(6),
             long: parseFloat(msg.long).toFixed(6)
         });
+
+        // If running old code with combined airmar and speed calculator
+        if (msg.XTE !== undefined) {
+            this.setState({
+                xte: parseFloat(msg.XTE).toFixed(1),
+                vmg: parseFloat(msg.VMG).toFixed(2)
+            });
+        }
     }
 
     speedStatsListener(msg) {
+        // If running new code with separate airmar and speed calculator
         this.setState({
             xte: parseFloat(msg.xte).toFixed(1),
             vmg: parseFloat(msg.vmg).toFixed(2)
