@@ -6,6 +6,7 @@ let arrow = require("./assets/arrow.png")
 let boat = require("./assets/boat.png")
 let rudder = require("./assets/rudder.png")
 let sail = require("./assets/sail.png")
+let target = require("./assets/heading.png")
 
 class Readout extends Component {
     constructor(props) {
@@ -13,9 +14,9 @@ class Readout extends Component {
 
         props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.rosListener(msg));
         props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
-        props.addListener('/leg_info', 'captain/LegInfo', msg => this.legListener(msg));
+        // props.addListener('/leg_info', 'captain/LegInfo', msg => this.legListener(msg));
         props.addListener('/nav_targets', 'tactics/NavTargets', msg => this.targetListener(msg));
-        props.addListener('/competition_info', 'captain/CompetitionInfo', msg => this.competitionListener(msg));
+        // props.addListener('/competition_info', 'captain/CompetitionInfo', msg => this.competitionListener(msg));
 
         this.state = {
             // Airmar Data
@@ -25,6 +26,18 @@ class Readout extends Component {
             main: 30,
             jib: 30,
             rudder: 30,
+            // Leg Info
+                // beginLat: 0,
+                // beginLong: 0,
+                // endLat: 0,
+                // endLong: 0,
+            // Nav Targets
+            targetCourse: 0,
+            targetRange: 0,
+            targetHeading: 0,
+            // Competition Info
+                // compMode: 0,
+                // angle: 0
        };
     }
 
@@ -47,6 +60,8 @@ class Readout extends Component {
             <text x={s - 15} y={s / 2 + 5} fontSize="15"> E</text>
             <text x={s / 40} y={s / 2 + 5} fontSize="15"> W</text>
 
+            <Image size={s} url={target} r={s/2 - s/10} angle={this.state.targetCourse}
+                    orientation={0} width="10" height="10"/>
             <Image size={s} url={boat} r={0} angle="0"
                    orientation={heading} width="50" height="125"/>
             <Image size={s} url={arrow} r={s / 2 - s / 7}
@@ -80,30 +95,29 @@ class Readout extends Component {
       });
     }
 
-    legListener(msg) {
-        this.setState({
-            beginLat: msg.begin_lat,
-            beginLong: msg.begin_long,
-            endLat: msg.end_lat,
-            endLong: msg.end_long
-        });
-    }
+    // legListener(msg) {
+    //     this.setState({
+    //         beginLat: msg.begin_lat,
+    //         beginLong: msg.begin_long,
+    //         endLat: msg.end_lat,
+    //         endLong: msg.end_long
+    //     });
+    // }
 
     targetListener(msg) {
         this.setState({
             targetCourse: msg.targetCourse,
             targetRange: msg.targetRange,
             targetHeading: msg.targetHeading,
-            pointOfSail: msg.pointOfSail
         });
     }
 
-    competitionListener(msg) {
-        this.setState({
-            compMode: msg.comp_mode,
-            angle: msg.angle
-        });
-    }
+    // competitionListener(msg) {
+    //     this.setState({
+    //         compMode: msg.comp_mode,
+    //         angle: msg.angle
+    //     });
+    // }
 }
 
 export default Readout
