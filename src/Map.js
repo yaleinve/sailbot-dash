@@ -35,6 +35,7 @@ class Map extends Component {
             longitude: -72.850389,
             zoom: 14
         },
+	didSetup : 1,
         settings: {
             dragPan: true,
             dragRotate: true,
@@ -83,17 +84,9 @@ class Map extends Component {
     }
 
     _renderBoatPath(map) {
-        // Call to map does lat/long transpose to meet mapbox convention
-        // Things seem to break without these console.log statements...
-        // console.log(map.getMap().getLayer("route"));
-        map.getMap().removeLayer("route");
-        // console.log(map.getMap().getLayer("route"));
-        // console.log(map.getMap().getSource("route"));
-        // console.log(map.getMap().isSourceLoaded("route"));
-        map.getMap().addLayer({
-            "id": "route",
-            "type": "line",
-            "source": {
+	if(this.state.didSetup==1)
+{
+map.getMap().addSource('map', {
                 "type": "geojson",
                 "data": {
                     "type": "Feature",
@@ -103,7 +96,11 @@ class Map extends Component {
                         "coordinates": this.state.path_history.map(pt => [pt[1], pt[0]])
                     }
                 }
-            },
+            });
+        map.getMap().addLayer({
+            "id": "route",
+            "type": "line",
+            "source": "route",
             "layout": {
                 "line-join": "round",
                 "line-cap": "butt"
@@ -113,7 +110,22 @@ class Map extends Component {
                 "line-width": 4
             }
         });
-
+	this.setState({didSetup:0});
+}
+        // Call to map does lat/long transpose to meet mapbox convention
+        // Things seem to break without these console.log statements...
+        // console.log(map.getMap().getLayer("route"));
+	map.getMap().getSource('route').setData({
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": this.state.path_history.map(pt => [pt[1], pt[0]])
+                    }
+                });
+        // console.log(map.getMap().getLayer("route"));
+        // console.log(map.getMap().getSource("route"));
+        // console.log(map.getMap().isSourceLoaded("route"));
     }
 
     _renderTarget(loc) {
