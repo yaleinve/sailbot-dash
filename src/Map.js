@@ -35,7 +35,7 @@ class Map extends Component {
             longitude: -72.850389,
             zoom: 14
         },
-	didSetup : 1,
+	   didSetup : 1,
         settings: {
             dragPan: true,
             dragRotate: true,
@@ -85,8 +85,8 @@ class Map extends Component {
 
     _renderBoatPath(map) {
 	if(this.state.didSetup==1)
-{
-map.getMap().addSource('map', {
+    {
+        map.getMap().addSource('map', {
                 "type": "geojson",
                 "data": {
                     "type": "Feature",
@@ -111,11 +111,13 @@ map.getMap().addSource('map', {
             }
         });
 	this.setState({didSetup:0});
-}
+    }
         // Call to map does lat/long transpose to meet mapbox convention
         // Things seem to break without these console.log statements...
         // console.log(map.getMap().getLayer("route"));
-	map.getMap().getSource('route').setData({
+	   let sc = map.getMap().getSource('route');
+       if(sc)
+        sc.setData({
                     "type": "Feature",
                     "properties": {},
                     "geometry": {
