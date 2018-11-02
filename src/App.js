@@ -24,6 +24,12 @@ class App extends Component {
 
         this._ratchetIpAddress = this._ratchetIpAddress.bind(this);
         this._yaleIpAddress = this._yaleIpAddress.bind(this);
+        this._showBanner = this._showBanner.bind(this);
+
+        this.state = {
+          showBanner: false,
+          warningMessage: ""
+        }
     }
 
     _setupRos(addr) {
@@ -59,8 +65,14 @@ class App extends Component {
                 messageType: msgType
             });
             topic.calls = [];
-            topic.on('warning', warn => console.log("ROS topic warning: " + warn));
-            topic.on('error', warn => console.log("ROS topic error: " + warn));
+            topic.on('warning', warn => {
+              console.log("ROS topic warning: " + warn);
+              this._showBanner("ROS topic warning: " + warn);
+            });
+            topic.on('error', warn => {
+              console.log("ROS topic error: " + warn);
+              this._showBanner("ROS topic error: " + warn);
+            });
             this.subTopics[topicName] = topic;
             console.log("Adding new subscription topic " + topicName);
             topic.subscribe(msg => {
@@ -70,6 +82,21 @@ class App extends Component {
             });
         }
         topic.calls.push(listener);
+    }
+
+    // Show message banner about warning/error
+    _showBanner(err) {
+      this.setState({         // show banner
+        showBanner: true,
+        warningMessage: err
+      });
+
+      setTimeout(() => {      // clear banner after 3 secs
+        this.setState({
+          showBanner: false,
+          warningMessage: ""
+        })
+      }, 3 * 1000)
     }
 
     // switch Edison to search for Ratchet Router IP address
@@ -106,18 +133,21 @@ class App extends Component {
     render() {
         return (
           <div id="appbox">
+            {this.state.showBanner && <div class="alert alert-primary" role="alert">
+              {this.state.warningMessage}
+            </div>}
             <div className={styles.wifiButtons}>
               <button onClick={this._ratchetIpAddress}>Switch to Ratcheet Router</button>
               <button onClick={this._yaleIpAddress}>Switch to YaleWifi</button>
             </div>
             <div className={styles.mapCol} key="mapCol">
                 <Map size="600" publish={this._publish} addListener={this._addListener}/>
-            </div>,
+            </div>
             <div className={styles.dataCol} key="dataCol">
                 <TextContainer
                     addListener={this._addListener}
                 />
-            </div>,
+            </div>
             <div className={styles.controlCol} key="controlCol">
                 <Readout size="250" addListener={this._addListener}/>
                 <Control name="Control Panel" size="250" publish={this._publish}/>
