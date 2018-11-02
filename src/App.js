@@ -110,12 +110,12 @@ class App extends Component {
             </div>
             <div className={styles.mapCol} key="mapCol">
                 <Map size="600" publish={this._publish} addListener={this._addListener}/>
-            </div>,
+            </div>
             <div className={styles.dataCol} key="dataCol">
                 <TextContainer
                     addListener={this._addListener}
                 />
-            </div>,
+            </div>
             <div className={styles.controlCol} key="controlCol">
                 <Readout size="250" addListener={this._addListener}/>
                 <Control name="Control Panel" size="250" publish={this._publish}/>
