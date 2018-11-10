@@ -60,7 +60,7 @@ class Readout extends Component {
             <text x={s - 15} y={s / 2 + 5} fontSize="15"> E</text>
             <text x={s / 40} y={s / 2 + 5} fontSize="15"> W</text>
 
-            <Image size={s} url={target} r={s/2 - s/10} angle={this.state.targetCourse}
+            <Image size={s} url={target} r={s/2 - s/10} angle={-1 * this.state.targetHeading}
                     orientation={0} width="10" height="10"/>
             <Image size={s} url={boat} r={0} angle="0"
                    orientation={heading} width="50" height="125"/>

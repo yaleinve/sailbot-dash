@@ -15,9 +15,9 @@ class App extends Component {
         this._addListener = this._addListener.bind(this);
         this._publish = this._publish.bind(this);
 
+        this.ros = this._setupRos("192.168.56.101:9090");
+        // this.ros = this._setupRos("172.27.119.137:9090");
         // this.ros = this._setupRos("192.168.0.98:9090"); // Ratchet router
-        this.ros = this._setupRos("localhost:9090"); // Ratchet router
-
         // this.ros = this._setupRos("172.29.35.63:9090"); // Yale wifi
         this.subTopics = {};
         this.pubTopics = {};
