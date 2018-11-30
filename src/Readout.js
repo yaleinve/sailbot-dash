@@ -65,7 +65,7 @@ class Readout extends Component {
             <Image size={s} url={boat} r={0} angle="0"
                    orientation={heading} width="50" height="125"/>
             <Image size={s} url={arrow} r={s / 2 - s / 7}
-                   angle={this.state.truWindDir}
+                   angle={-this.state.truWindDir}
                    orientation={180 - this.state.truWindDir}
                    width="10" height="25"/>
             <Image name="rudder"
