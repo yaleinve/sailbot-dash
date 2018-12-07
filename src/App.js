@@ -7,34 +7,35 @@ import Readout from './Readout';
 import Control from './Control';
 import Roslib from "roslib";
 
+var dest = {"Jared": "192.168.64.10:9090",
+            "Linc": "172.29.35.63:9090",
+            "Yale": "172.29.35.63:9090",
+            "Rachet": "192.168.0.98:9090"};
 
 class App extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+          showBanner: false,
+          warningMessage: "",
+          dest: "Jared"
+        }
+
         this._addListener = this._addListener.bind(this);
         this._publish = this._publish.bind(this);
+        this._onChange = this._onChange.bind(this);
 
-        // this.ros = this._setupRos("192.168.56.101:9090");
-        // this.ros = this._setupRos("172.27.119.137:9090");
-        // this.ros = this._setupRos("192.168.0.98:9090"); // Ratchet router
-        // this.ros = this._setupRos("172.29.35.63:9090"); // Yale wifi
-        this.ros = this._setupRos("192.168.64.10:9090"); // Jared's VirtualEnv
+        this.ros = this._setupRos(dest[this.state.dest])
 
         this.subTopics = {};
         this.pubTopics = {};
 
-        this._ratchetIpAddress = this._ratchetIpAddress.bind(this);
-        this._yaleIpAddress = this._yaleIpAddress.bind(this);
         this._showBanner = this._showBanner.bind(this);
-
-        this.state = {
-          showBanner: false,
-          warningMessage: ""
-        }
     }
 
     _setupRos(addr) {
+        console.log(addr);
         let ros = new Roslib.Ros({url: 'ws://' + addr});
 
         ros.on('connection', () => {
@@ -102,15 +103,12 @@ class App extends Component {
     }
 
     // switch Edison to search for Ratchet Router IP address
-    _ratchetIpAddress() {
-      this.ros = this._setupRos("192.168.0.98:9090"); // Ratchet router
-      console.log("Switching Edison to ratchet router wifi...");
-    }
-
-    // switch Edison to search for Ratchet Router IP address
-    _yaleIpAddress() {
-      this.ros = this._setupRos("172.29.35.63:9090"); // Yale wifi
-      console.log("Switching Edison to yale wifi...");
+    _onChange(element) {
+        var val = element.target.value;
+        this.setState({
+            dest: val
+        });
+        this.ros = this._setupRos(dest[val])
     }
 
     _publish(topicName, msgType, msg) {
@@ -139,8 +137,13 @@ class App extends Component {
               {this.state.warningMessage}
             </div>}
             <div className={styles.wifiButtons}>
-              <button onClick={this._ratchetIpAddress}>Switch to Ratcheet Router</button>
-              <button onClick={this._yaleIpAddress}>Switch to YaleWifi</button>
+              <select id="dest" onChange={this._onChange} value={this.state.dest}>
+                {
+                  Object.keys(dest).map(val => {
+                    return <option key={val} value={val}>{val}</option>
+                  })
+                }
+              </select>
             </div>
             <div className={styles.mapCol} key="mapCol">
                 <Map size="600" publish={this._publish} addListener={this._addListener}/>
