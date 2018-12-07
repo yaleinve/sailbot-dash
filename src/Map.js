@@ -84,7 +84,7 @@ class Map extends Component {
     }
 
     _renderBoatPath(map) {
-	if(this.state.didSetup==1)
+	if(this.state.didSetup === 1)
     {
         map.getMap().addSource('map', {
                 "type": "geojson",

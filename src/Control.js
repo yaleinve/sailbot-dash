@@ -46,7 +46,7 @@ class Control extends Component {
             this.setState({gpstarget: 'Longitude must be between -180 and 180 degrees inclusive.'});
         }
 
-        else if (lat == "" || lng == "" || isNaN(lat) || isNaN(lng)) {
+        else if (lat === "" || lng === "" || isNaN(lat) || isNaN(lng)) {
             alert("ERROR: Enter a valid Latitude or Longitude!");
             this.setState({gpstarget: ' '});
             return;
