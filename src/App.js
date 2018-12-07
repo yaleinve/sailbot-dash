@@ -12,6 +12,8 @@ var dest = {"Jared": "192.168.64.10:9090",
             "Yale": "172.29.35.63:9090",
             "Rachet": "192.168.0.98:9090"};
 
+var DEFAULT = "Yale"
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -19,14 +21,13 @@ class App extends Component {
         this.state = {
           showBanner: false,
           warningMessage: "",
-          dest: "Jared"
+          dest: DEFAULT,
+          ros: this._setupRos(dest[DEFAULT])
         }
 
         this._addListener = this._addListener.bind(this);
         this._publish = this._publish.bind(this);
         this._onChange = this._onChange.bind(this);
-
-        this.ros = this._setupRos(dest[this.state.dest])
 
         this.subTopics = {};
         this.pubTopics = {};
@@ -63,7 +64,7 @@ class App extends Component {
             topic = this.subTopics[topicName];
         } else {
             topic = new Roslib.Topic({
-                ros: this.ros,
+                ros: this.state.ros,
                 name: topicName,
                 messageType: msgType
             });
@@ -104,11 +105,13 @@ class App extends Component {
 
     // switch Edison to search for Ratchet Router IP address
     _onChange(element) {
+        console.log("NOTE: THIS SWITCH DOES NOT CURRENTLY UPDATE THE ROS LISTENER AND PUBLISHER");
+        console.log("PLEASE switch the default in App.js or fix the code ;) ");
         var val = element.target.value;
         this.setState({
-            dest: val
+            dest: val,
+            ros: this._setupRos(dest[val])
         });
-        this.ros = this._setupRos(dest[val])
     }
 
     _publish(topicName, msgType, msg) {
@@ -118,7 +121,7 @@ class App extends Component {
             topic = this.pubTopics[topicName];
         } else {
             topic = new Roslib.Topic({
-                ros: this.ros,
+                ros: this.state.ros,
                 name: topicName,
                 messageType: msgType
             });

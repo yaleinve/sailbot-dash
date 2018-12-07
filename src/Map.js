@@ -162,7 +162,7 @@ class Map extends Component {
         var boatMarker;
         if (this.state.path_history.length >= 1) {
             boatMarker = {"name":"Boat","coordinates":this.state.path_history.slice(-1)[0]};
-            console.log(this.state.path_history.slice(-1)[0]);
+            // console.log(this.state.path_history.slice(-1)[0]);
         } else {
             boatMarker = {"name":"Boat","coordinates":[0,0]}
         }
