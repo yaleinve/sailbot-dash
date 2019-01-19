@@ -14,9 +14,10 @@ var dest = {"Jared": "192.168.64.10:9090",
             "Miles": "172.27.156.48:9090"
           };
 
-var DEFAULT = "Miles"
+var DEFAULT = window.location.href.split('?')[1] || "Yale"
 
 class App extends Component {
+
     constructor(props) {
         super(props);
 
@@ -29,11 +30,11 @@ class App extends Component {
 
         this._addListener = this._addListener.bind(this);
         this._publish = this._publish.bind(this);
-        this._onChange = this._onChange.bind(this);
 
         this.subTopics = {};
         this.pubTopics = {};
 
+        this._onChange = this._onChange.bind(this);
         this._showBanner = this._showBanner.bind(this);
     }
 
@@ -50,7 +51,7 @@ class App extends Component {
         });
 
         ros.on('close', () => {
-            console.log('Disconnected form websocket server.');
+            console.log('Disconnected from websocket server.');
         });
 
         return ros;
@@ -66,8 +67,10 @@ class App extends Component {
     _addListener(topicName, msgType, listener) {
         let topic;
         console.log("Adding listener for " + topicName);
+
         if (topicName in this.subTopics) {
             topic = this.subTopics[topicName];
+
         } else {
             topic = new Roslib.Topic({
                 ros: this.state.ros,
@@ -75,6 +78,7 @@ class App extends Component {
                 messageType: msgType
             });
             topic.calls = [];
+
             topic.on('warning', warn => {
               console.log("ROS topic warning: " + warn);
               this._showBanner("ROS topic warning: " + warn);
@@ -83,6 +87,7 @@ class App extends Component {
               console.log("ROS topic error: " + warn);
               this._showBanner("ROS topic error: " + warn);
             });
+
             this.subTopics[topicName] = topic;
             console.log("Adding new subscription topic " + topicName);
             topic.subscribe(msg => {
@@ -111,13 +116,55 @@ class App extends Component {
 
     // switch Edison to search for Ratchet Router IP address
     _onChange(element) {
+
         console.log("NOTE: THIS SWITCH DOES NOT CURRENTLY UPDATE THE ROS LISTENER AND PUBLISHER");
         console.log("PLEASE switch the default in App.js or fix the code ;) ");
+
+
         var val = element.target.value;
         this.setState({
             dest: val,
             ros: this._setupRos(dest[val])
         });
+
+
+        // for (let topic in this.subTopics) {
+
+        //     let newTopic = new Roslib.Topic({
+        //         ros: this.state.ros,
+        //         name: topic.name,
+        //         messageType: topic.messageType
+        //     })
+
+        //     newTopic.on('warning', warn => {
+        //       console.log("ROS topic warning: " + warn);
+        //       this._showBanner("ROS topic warning: " + warn);
+        //     });
+
+        //     newTopic.on('error', warn => {
+        //       console.log("ROS topic error: " + warn);
+        //       this._showBanner("ROS topic error: " + warn);
+        //     });
+
+        //     this.subTopics[topic.name] = newTopic
+        //     console.log("Changed topic to new address")
+        //     console.log("")
+
+        //     newTopic.subscribe(msg => {
+        //         for (let i in newTopic.calls) {
+        //             (newTopic.calls[i])(msg);
+        //         }
+        //     });
+
+            // newTopic.calls = topic.calls
+
+
+
+
+        }
+
+        // So, right now, 'ros' changes, but the listeners and publishers are still referring to the old ros.
+
     }
 
     _publish(topicName, msgType, msg) {
