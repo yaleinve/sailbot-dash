@@ -10,9 +10,11 @@ import Roslib from "roslib";
 var dest = {"Jared": "192.168.64.10:9090",
             "Linc": "172.29.35.63:9090",
             "Yale": "172.29.35.63:9090",
-            "Rachet": "192.168.0.98:9090"};
+            "Rachet": "192.168.0.98:9090",
+            "Miles": "localhost:9090"
+          };
 
-var DEFAULT = "Yale"
+var DEFAULT = "Miles"
 
 class App extends Component {
     constructor(props) {
@@ -45,6 +47,10 @@ class App extends Component {
 
         ros.on('error', error => {
             console.log('Error connecting to websocket server: ', error);
+        });
+
+        ros.on('close', () => {
+            console.log('Disconnected form websocket server.');
         });
 
         return ros;
