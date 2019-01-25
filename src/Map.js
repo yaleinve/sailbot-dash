@@ -20,10 +20,10 @@ class Map extends Component {
 
       this.state = {
         poi: [
-            // {"name":"Point 1","coordinates":[41.258245, -72.850291]},
-            // {"name":"Point 2","coordinates":[41.258245, -72.858291]},
-            // {"name":"Point 3","coordinates":[41.252245, -72.858291]},
-            // {"name":"Point 4","coordinates":[41.252245, -72.850291]}
+                // {"name":"Point 1","coordinates":[41.258245, -72.850291]},
+                // {"name":"Point 2","coordinates":[41.258245, -72.858291]},
+                // {"name":"Point 3","coordinates":[41.252245, -72.858291]},
+                // {"name":"Point 4","coordinates":[41.252245, -72.850291]}
             ],
         // stored as [lat, long, speed]
         destination: [41.252245, -72.858291],
@@ -83,60 +83,48 @@ class Map extends Component {
         this.setState({viewport});
     }
 
-    _renderBoatPath(map) {
-	if(this.state.didSetup === 1)
-    {
-        map.getMap().addSource('map', {
-                "type": "geojson",
-                "data": {
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "type": "LineString",
-                        "coordinates": this.state.path_history.map(pt => [pt[1], pt[0]])
-                    }
-                }
-            });
-        map.getMap().addLayer({
-            "id": "route",
-            "type": "line",
-            "source": "route",
-            "layout": {
-                "line-join": "round",
-                "line-cap": "butt"
-            },
-            "paint": {
-                "line-color": "#888",
-                "line-width": 4
+    _updateBoatPath() {
+        var data = {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+                "type": "LineString",
+                "coordinates": this.state.path_history.slice(-300).map(pt => [pt[1], pt[0]])
             }
-        });
-	this.setState({didSetup:0});
+        };
+        this.map.getSource('trace').setData(data);
     }
-        // Call to map does lat/long transpose to meet mapbox convention
-        // Things seem to break without these console.log statements...
-        // console.log(map.getMap().getLayer("route"));
-	   let sc = map.getMap().getSource('route');
-       if(sc)
-        sc.setData({
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                        "type": "LineString",
-                        "coordinates": this.state.path_history.map(pt => [pt[1], pt[0]])
+
+    _renderBoatPath(map) {
+        if (map.getSource('trace') === undefined) {
+            map.addSource('trace', {
+                    "type": "geojson",
+                    "data": {
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": this.state.path_history.map(pt => [pt[1], pt[0]])
+                        }
                     }
                 });
-        // console.log(map.getMap().getLayer("route"));
-        // console.log(map.getMap().getSource("route"));
-        // console.log(map.getMap().isSourceLoaded("route"));
-    }
+            map.addLayer({
+                "id": "trace",
+                "type": "line",
+                "source": "trace",
+                "layout": {
+                    "line-join": "round",
+                    "line-cap": "butt"
+                },
+                "paint": {
+                    "line-color": "#888",
+                    "line-width": 4
+                }
+            });
+        }
 
-    _renderTarget(loc) {
-        return (
-            <Marker key={"destination"} latitude={loc[0]} longitude={loc[1]}>
-                <div className="target"><span>{"destination"}</span></div>
-            </Marker>
-        );
-
+        this.map = map
+        var timer = window.setInterval( this._updateBoatPath.bind(this), 100);
     }
 
     _renderMarker(station, i) {
@@ -158,11 +146,9 @@ class Map extends Component {
 
 
     render() {
-        // XXX
         var boatMarker;
         if (this.state.path_history.length >= 1) {
             boatMarker = {"name":"Boat","coordinates":this.state.path_history.slice(-1)[0]};
-            // console.log(this.state.path_history.slice(-1)[0]);
         } else {
             boatMarker = {"name":"Boat","coordinates":[0,0]}
         }
@@ -173,15 +159,14 @@ class Map extends Component {
                     {...this.state.viewport}
                     ref = {(map) => {
                         if (map !== null) {
-                            this._map = map;
-                            this._map.getMap().on('load', () => this._renderBoatPath(this._map))
+                            map.getMap().on('load', () => this._renderBoatPath(map.getMap()))
                         }
                     }}
                     onViewportChange={(viewport) => this.setState({viewport})}
                     mapStyle={Mapstyle}>
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
-                {this._renderTarget(this.state.destination)}
+                { /* this._renderTarget(this.state.destination) */ }
                 {this._renderMarker(boatMarker)}
             </MapGL>
         );

@@ -14,7 +14,7 @@ var dest = {"Jared": "192.168.64.10:9090",
             "Miles": "172.27.156.48:9090"
           };
 
-var DEFAULT = "Miles"
+var DEFAULT = "Rachet"
 
 class App extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class App extends Component {
 
         this._addListener = this._addListener.bind(this);
         this._publish = this._publish.bind(this);
-        this._onChange = this._onChange.bind(this);
+        // this._onChange = this._onChange.bind(this);
 
         this.subTopics = {};
         this.pubTopics = {};
@@ -111,8 +111,8 @@ class App extends Component {
 
     // switch Edison to search for Ratchet Router IP address
     _onChange(element) {
-        console.log("NOTE: THIS SWITCH DOES NOT CURRENTLY UPDATE THE ROS LISTENER AND PUBLISHER");
-        console.log("PLEASE switch the default in App.js or fix the code ;) ");
+        // console.log("NOTE: THIS SWITCH DOES NOT CURRENTLY UPDATE THE ROS LISTENER AND PUBLISHER");
+        // console.log("PLEASE switch the default in App.js or fix the code ;) ");
         var val = element.target.value;
         this.setState({
             dest: val,
@@ -145,15 +145,6 @@ class App extends Component {
             {this.state.showBanner && <div class="alert alert-primary" role="alert">
               {this.state.warningMessage}
             </div>}
-            <div className={styles.wifiButtons}>
-              <select id="dest" onChange={this._onChange} value={this.state.dest}>
-                {
-                  Object.keys(dest).map(val => {
-                    return <option key={val} value={val}>{val}</option>
-                  })
-                }
-              </select>
-            </div>
             <div className={styles.mapCol} key="mapCol">
                 <Map size="600" publish={this._publish} addListener={this._addListener}/>
             </div>
