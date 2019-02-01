@@ -146,11 +146,9 @@ class Map extends Component {
 
 
     render() {
-        var boatMarker;
+        var boatMarker = {"name":"Boat","coordinates":[0,0]}
         if (this.state.path_history.length >= 1) {
-            boatMarker = {"name":"Boat","coordinates":this.state.path_history.slice(-1)[0]};
-        } else {
-            boatMarker = {"name":"Boat","coordinates":[0,0]}
+            boatMarker["coordinates"] = this.state.path_history.slice(-1)[0];
         }
 
         return (
@@ -163,10 +161,11 @@ class Map extends Component {
                         }
                     }}
                     onViewportChange={(viewport) => this.setState({viewport})}
-                    mapStyle={Mapstyle}>
+                    // mapStyle={Mapstyle}> // RENDERS OFFLINE CONTENT
+                    mapStyle="mapbox://styles/mapbox/dark-v9">
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
-                { /* this._renderTarget(this.state.destination) */ }
+                {this._renderMarker({"name": "Target", "coordinates": this.state.destination})}
                 {this._renderMarker(boatMarker)}
             </MapGL>
         );
