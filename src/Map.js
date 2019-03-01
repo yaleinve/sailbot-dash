@@ -161,8 +161,7 @@ class Map extends Component {
                         }
                     }}
                     onViewportChange={(viewport) => this.setState({viewport})}
-                    // mapStyle={Mapstyle}> // RENDERS OFFLINE CONTENT
-                    mapStyle="mapbox://styles/mapbox/dark-v9">
+                    mapStyle={Mapstyle}> // RENDERS OFFLINE CONTENT
                 <style>{MARKER_STYLE}</style>
                 {this.state.poi.map(this._renderMarker)}
                 {this._renderMarker({"name": "Target", "coordinates": this.state.destination})}
