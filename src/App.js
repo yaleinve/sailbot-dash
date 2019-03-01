@@ -14,7 +14,7 @@ var dest = {"Jared": "192.168.64.10:9090",
             "Miles": "172.27.156.48:9090"
           };
 
-var DEFAULT = "Yale"
+var DEFAULT = window.location.href.split('?')[1] || "Yale"
 
 class App extends Component {
     constructor(props) {
