@@ -7,12 +7,22 @@ let boat = require("./assets/boat.png")
 let rudder = require("./assets/rudder.png")
 let sail = require("./assets/sail.png")
 let target = require("./assets/heading.png")
+let destination = require("./assets/destination.png")
+
+function gpsBearing(lat1, lon1, lat2, lon2) {
+        let dlon = lon2 - lon1;
+        let y = Math.sin(dlon) * Math.cos(lat2);
+        let x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dlon)
+        let d = Math.atan2(y, x) * 360 / Math.PI
+        return (d%360)/2
+    }
 
 class Readout extends Component {
     constructor(props) {
         super(props);
 
         props.addListener('/airmar_data', 'airmar/AirmarData', msg => this.rosListener(msg));
+        props.addListener('/leg_info', 'captain/LegInfo', msg => this.legListener(msg));
         props.addListener('/sails_rudder_pos', 'sails_rudder/SailsRudderPos', msg => this.sailsListener(msg));
         // props.addListener('/leg_info', 'captain/LegInfo', msg => this.legListener(msg));
         props.addListener('/nav_targets', 'tactics/NavTargets', msg => this.targetListener(msg));
@@ -20,6 +30,8 @@ class Readout extends Component {
 
         this.state = {
             // Airmar Data
+            lat: 0,
+            lon: 0,
             heading: 170,
             truWindDir: 300,
             // Sails Rudder
@@ -29,8 +41,8 @@ class Readout extends Component {
             // Leg Info
                 // beginLat: 0,
                 // beginLong: 0,
-                // endLat: 0,
-                // endLong: 0,
+                 endLat: 0,
+                 endLong: 0,
             // Nav Targets
             targetCourse: 0,
             targetRange: 0,
@@ -62,6 +74,14 @@ class Readout extends Component {
 
             <Image size={s} url={target} r={s/2 - s/10} angle={-1 * this.state.targetHeading}
                     orientation={0} width="10" height="10"/>
+            <Image size={s} url={destination} r={s/2 - s/10} angle={gpsBearing(
+                this.state.lat,
+                this.state.lon,
+                this.state.endLat,
+                this.state.endLong
+             )} orientation={0} width="10" height="10"/>
+
+
             <Image size={s} url={boat} r={0} angle="0"
                    orientation={heading} width="50" height="125"/>
             <Image size={s} url={arrow} r={s / 2 - s / 7}
@@ -84,7 +104,19 @@ class Readout extends Component {
     }
 
     rosListener(msg) {
-        this.setState({heading: msg.heading, truWindDir: msg.truWndDir});
+        this.setState({
+            heading: msg.heading,
+            truWindDir: msg.truWndDir,
+            lat: msg.lat,
+            lon: msg.long
+        });
+
+        console.log(gpsBearing(
+                this.state.endLat,
+                this.state.endLong,
+                this.state.lat,
+                this.state.lon
+             ))
     }
 
     sailsListener(msg) {
@@ -95,14 +127,14 @@ class Readout extends Component {
       });
     }
 
-    // legListener(msg) {
-    //     this.setState({
-    //         beginLat: msg.begin_lat,
-    //         beginLong: msg.begin_long,
-    //         endLat: msg.end_lat,
-    //         endLong: msg.end_long
-    //     });
-    // }
+     legListener(msg) {
+         this.setState({
+             beginLat: msg.begin_lat,
+             beginLong: msg.begin_long,
+             endLat: msg.end_lat,
+             endLong: msg.end_long
+         });
+     }
 
     targetListener(msg) {
         this.setState({

@@ -11,7 +11,7 @@ var dest = {"Jared": "192.168.64.10:9090",
             "Linc": "172.29.35.63:9090",
             "Yale": "172.29.35.71:9090",
             "Rachet": "192.168.0.98:9090",
-            "Miles": "172.27.156.48:9090"
+            "Miles": "localhost:9090"
           };
 
 var DEFAULT = window.location.href.split('?')[1] || "Yale"
